@@ -74,4 +74,34 @@ describe('/api/articles/:article_id', () => {
         })
     })
  })
- 
+describe('/api/articles', () => {
+    test('GET: 200, returns an articles array of article objects with a comments count added and body removed', () => {
+        return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({body}) => {
+            const { articles } = body;
+            articles.forEach((article) => {
+                expect(article).toHaveProperty('comment_count')
+                expect(article).not.toHaveProperty('body')
+                expect(article).toHaveProperty('article_id');
+                expect(article).toHaveProperty('author');
+                expect(article).toHaveProperty('title');
+                expect(article).toHaveProperty('topic');
+                expect(article).toHaveProperty('created_at');
+                expect(article).toHaveProperty('votes');
+                expect(article).toHaveProperty('article_img_url');
+            })
+        })      
+    })
+    test('GET: 200, return an amended articles array of article objects in descending order of date', () => {
+        return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({body}) => {
+            const { articles } = body;
+            expect(articles).toBeSortedBy('created_at', {descending: true})
+        }) 
+    })
+})
+
