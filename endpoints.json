@@ -45,7 +45,8 @@
   "GET /api/articles": {
     "description": "serves an array of article objects with the body property removed and a comments count property added, sorted in descending date order",
     "queries": ["article_id", "title", "topic", "author", "created_at", "votes", "article_img_url", "comment_count"],
-    "exampleResponse": {
+    "exampleResponse": [
+      {
       "article_id": 12,
       "author": "butter_bridge",
       "title": "Moustache",
@@ -55,5 +56,20 @@
       "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
       "comment_count": "0"
     }
+  ]
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves an array of comment objects asociated with the article ID, served with the most recent first",
+    "queries": ["comment_id", "votes", "created_at", "author", "body", "article_id"],
+    "exampleResponse": [
+      {
+      "comment_id": 11,
+      "body": "Ambidextrous marsupial",
+      "article_id": 3,
+      "author": "icellusedkars",
+      "votes": 0,
+      "created_at": "2020-09-19T23:10:00.000Z"
+    }
+  ]
   }
 }
