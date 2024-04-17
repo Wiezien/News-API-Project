@@ -140,3 +140,31 @@ describe('/api/articles/:article_id/comments', () => {
         })
     })
 })
+describe('/api/articles/:article_id/comments', () => {
+    test('POST: 201, creates a new comment for an article', () => {
+        const newComment = {
+            body: 'This is a test comment',
+            username: 'icellusedkars'
+        }
+        return request(app)
+        .post('/api/articles/3/comments')
+        .send(newComment)
+        .expect(201)
+        .then((response) => {
+            expect(response.body.comment.comment_id).toBe(19)
+            expect(response.body.comment.votes).toBe(0)
+            expect(response.body.comment.author).toBe('icellusedkars')
+            expect(response.body.comment.article_id).toBe(3)
+            expect(response.body.comment.body).toBe('This is a test comment')
+            expect(typeof response.body.comment.created_at).toBe('string')
+        })
+    })
+    test('POST: 400, sends an appropriate status and error message when given an invalid id', () => {
+        return request(app)
+        .post('/api/articles/not-an-article/comments')
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('bad request')
+        })
+    })
+})
