@@ -104,4 +104,39 @@ describe('/api/articles', () => {
         }) 
     })
 })
-
+describe('/api/articles/:article_id/comments', () => {
+    test('GET: 200, returns an array of comment objects asociated with the article ID', () => {
+        return request(app)
+        .get('/api/articles/1/comments')
+        .expect(200)
+        .then(({body}) => {
+            const { comments } = body;
+            expect(comments).toHaveLength(11)
+        })
+    })
+    test('GET: 200, returns an array of comment objects with the most recent comment first', () => {
+        return request(app)
+        .get('/api/articles/3/comments')
+        .expect(200)
+        .then(({body}) => {
+            const { comments } = body;
+            expect(comments).toBeSortedBy('created_at', {descending: true})
+        })
+    })
+    test('GET: 404, sends an appropriate status and error message when given a valid but non-existent id', () => {
+        return request(app)
+        .get('/api/articles/888/comments')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('article does not exist')
+        })
+    })
+    test('GET: 400, sends an appropriate status and error message when given an invalid id', () => {
+        return request(app)
+        .get('/api/articles/not-an-article/comments')
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('bad request')
+        })
+    })
+})

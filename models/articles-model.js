@@ -13,7 +13,6 @@ function selectArticleById(article_id) {
    return db
    .query('SELECT * FROM articles WHERE article_id = $1;', [article_id])
    .then((result) => {
-    //console.log(result)
     return result.rows[0]
    })
 }
@@ -33,4 +32,15 @@ function selectArticles(articles, comments){
     })
 }
 
-module.exports = { selectTopics, selectArticleById, selectArticles }
+function selectCommentsByArticleId(article_id) {
+   return db
+   .query(`SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC`, [article_id])
+   .then(({rows:comments}) => {
+    if(!comments.length){
+        return Promise.reject({ status: 404, msg: 'article does not exist' })
+      }
+    return comments;
+   })
+}
+
+module.exports = { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId }
