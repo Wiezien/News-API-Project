@@ -51,8 +51,11 @@ function insertComment(newComment, article_id) {
     VALUES ($1, $2, $3)
     RETURNING *;`,
     [body, username, article_id])
-    .then((result) => {
-        return result.rows[0]
+    .then(({rows}) => {
+        if(rows.length === 0) {
+            return Promise.reject({status: 404, msg: 'article does not exist'})
+        }
+    return result.rows[0]
     })
 }
 
@@ -77,7 +80,7 @@ function removeCommentById(comment_id){
     .query(`DELETE FROM comments WHERE comment_id = $1 RETURNING *`, [comment_id])
     .then(({rows}) => {
         if(rows.length === 0) {
-            return Promise.reject({status: 404, msg: 'article does not exist'})
+            return Promise.reject({status: 404, msg: 'comment does not exist'})
         }
     });
 }

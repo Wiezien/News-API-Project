@@ -62,12 +62,7 @@ function patchArticles(req, res, next) {
   const { inc_votes } = req.body
   updateVote(article_id, inc_votes)
   .then((article) => {
-    // if(!article){
-    //   res.status(404).send({ msg: 'article does not exist' })
-    // }
-    // else {
       res.status(200).send({ article })
-    // }
   })
   .catch((err) => {
     next(err)
