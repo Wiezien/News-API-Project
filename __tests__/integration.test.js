@@ -189,7 +189,15 @@ describe('/api/articles/:article_id', () => {
             expect(article.article_img_url).toBe('https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700')
         }) 
     }) 
-    test('PATCH: 400 sends an appropriate status and error message when given an invalid id', () => {
+    // test('PATCH: 404 sends an appropriate status and error message when given a valid but non-existent id', () => {
+    //     return request(app)
+    //     .patch ('/api/articles/not-an-article')
+    //     .expect(404)
+    //     .then(({body}) => {
+    //         expect(body.msg).toBe('article does not exist')
+    //     })
+    // }) 
+    test('PATCH: 400, sends an appropriate status and error message when given an invalid id', () => {
         return request(app)
         .patch('/api/articles/not-an-article')
         .expect(400)
@@ -197,6 +205,27 @@ describe('/api/articles/:article_id', () => {
             expect(body.msg).toBe('bad request')
         })
     })
-    
-
+})
+describe('/api/comments/:comment_id', () => {
+    test('DELETE: 204, deletes the given comment by comment_id and sends no body back', () => {
+        return request(app)
+        .delete('/api/comments/3')
+        .expect(204)
+    })
+    test('DELETE: 404, sends an appropriate status and error message when given a valid but non-existent id', () => {
+        return request(app)
+        .delete('/api/comments/888')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('article does not exist')
+        })
+    })
+    test('DELETE: 400, sends an appropriate status and error message when given an invalid id', () => {
+        return request(app)
+        .delete('/api/comments/not-an-article')
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('bad request')
+        })
+    })
 })

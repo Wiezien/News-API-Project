@@ -70,7 +70,16 @@ function updateVote(newVote, article_id) {
         // }
         return result.rows[0]
     });
-
 }
 
-module.exports = { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment, updateVote }
+function removeCommentById(comment_id){
+    return db
+    .query(`DELETE FROM comments WHERE comment_id = $1 RETURNING *`, [comment_id])
+    .then(({rows}) => {
+        if(rows.length === 0) {
+            return Promise.reject({status: 404, msg: 'article does not exist'})
+        }
+    });
+}
+
+module.exports = { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment, updateVote, removeCommentById }
