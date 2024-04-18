@@ -85,5 +85,21 @@
       "created_at": "2020-09-19T23:10:00.000Z"
     }
   ]
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "returns an updated article by article_id, with amended votes",
+    "queries": ["article_id", "title", "topic", "author", "body", "created_at", "votes", "article_img_url"],
+    "exampleResponse": [
+      {
+      "article_id": 10,
+      "title": "Seven inspirational thought leaders from Manchester UK",
+      "topic": "mitch",
+      "author": "rogersop",
+      "body": "Who are we kidding, there is only one, and it's Mitch!",
+      "created_at": "2020-05-14T04:15:00.000Z",
+      "votes": 9,
+      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+    }
+  ]
   }
 }

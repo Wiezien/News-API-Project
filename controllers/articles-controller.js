@@ -1,4 +1,4 @@
-const { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment } = require('../models/articles-model')
+const { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment, updateVote } = require('../models/articles-model')
 const endpoints = require('../endpoints.json')
 
 function getTopics(req, res, next){
@@ -47,7 +47,7 @@ function getCommentsByArticleId(req, res, next) {
 }
 
 function postComments(req, res, next){
-  const {article_id} = req.params
+  const { article_id } = req.params
   insertComment(req.body, article_id)
   .then((comment) => {
     res.status(201).send({ comment })
@@ -57,5 +57,22 @@ function postComments(req, res, next){
   })
 }
 
+function patchArticles(req, res, next) {
+  const { article_id } = req.params
+  const { inc_votes } = req.body
+  updateVote(article_id, inc_votes)
+  .then((article) => {
+    // if(!article){
+    //   res.status(404).send({ msg: 'article does not exist' })
+    // }
+    // else {
+      res.status(200).send({ article })
+    // }
+  })
+  .catch((err) => {
+    next(err)
+  })
+}
 
-module.exports = { getTopics, getEndpoints, getArticleById, getArticles, getCommentsByArticleId, postComments }
+
+module.exports = { getTopics, getEndpoints, getArticleById, getArticles, getCommentsByArticleId, postComments, patchArticles }

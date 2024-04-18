@@ -45,7 +45,7 @@ function selectCommentsByArticleId(article_id) {
 
 function insertComment(newComment, article_id) {
     const {username, body} = newComment 
-
+    
     return db
     .query (`INSERT INTO comments (body, author, article_id)
     VALUES ($1, $2, $3)
@@ -56,4 +56,21 @@ function insertComment(newComment, article_id) {
     })
 }
 
-module.exports = { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment }
+function updateVote(newVote, article_id) {
+    return db
+    .query(`UPDATE articles
+    SET votes = votes + $2
+    WHERE article_id = $1
+    RETURNING *`,
+    [newVote, article_id]
+    ) 
+    .then((result) => {
+        // if(!result.rows[0]){
+        //     return Promise.reject({ status: 404, msg: 'not found' })
+        // }
+        return result.rows[0]
+    });
+
+}
+
+module.exports = { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment, updateVote }

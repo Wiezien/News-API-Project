@@ -168,3 +168,35 @@ describe('/api/articles/:article_id/comments', () => {
         })
     })
 })
+describe('/api/articles/:article_id', () => {
+    test('PATCH: 200, returns an updated article by article_id, with amended votes', () => {
+        const newVote = {
+            inc_votes: 9
+        } 
+        return request(app)
+        .patch('/api/articles/10')
+        .send(newVote)
+        .expect(200)
+        .then(({body}) => {
+            const { article } = body;
+            expect(article.article_id).toBe(10)
+            expect(article.title).toBe('Seven inspirational thought leaders from Manchester UK')
+            expect(article.topic).toBe('mitch')
+            expect(article.author).toBe('rogersop')
+            expect(article.body).toBe('Who are we kidding, there is only one, and it\'s Mitch!')
+            expect(typeof article.created_at).toBe('string')
+            expect(article.votes).toBe(9)  
+            expect(article.article_img_url).toBe('https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700')
+        }) 
+    }) 
+    test('PATCH: 400 sends an appropriate status and error message when given an invalid id', () => {
+        return request(app)
+        .patch('/api/articles/not-an-article')
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('bad request')
+        })
+    })
+    
+
+})
