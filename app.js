@@ -28,6 +28,13 @@ app.use((err, req, res, next) => {
         next(err)
     }
 })
+app.use((err, req, res, next) => {
+    if(err.code === "23502"){
+        res.status(404).send({msg: 'not found'})
+    } else {
+        next(err)
+    }
+})
     
 app.use((err, req, res, next) => {
     if(err.status && err.msg) {
