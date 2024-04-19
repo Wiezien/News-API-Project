@@ -17,19 +17,38 @@ function selectArticleById(article_id) {
    })
 }
 
-function selectArticles(articles, comments){
+function selectArticles(articles, comments, topic){
+    const queryValues = []
+    let sqlQuery = 'SELECT * FROM articles';
+
+    if (topic){
+        queryValues.push(topic)
+        sqlQuery += `COUNT(comments.article_id) AS comment_count
+             FROM articles
+             LEFT JOIN comments
+             ON articles.article_id = comments.article_id 
+             WHERE TOPIC = $1
+             GROUP BY
+             articles.article_id
+             ORDER BY articles.created_at DESC;`,
+             [topic]
+        return queryValues
+    }
+    else {
+        sqlQuery += (`COUNT(comments.article_id) AS comment_count
+        FROM articles
+        LEFT JOIN comments
+        ON articles.article_id = comments.article_id 
+        GROUP BY
+        articles.article_id
+        ORDER BY articles.created_at DESC;`,
+        [topic])
     return db
-    .query(`SELECT articles.article_id, articles.author, articles.title, articles.topic, articles.created_at, articles.votes, articles.article_img_url,
-    COUNT(comments.article_id) AS comment_count
-    FROM articles
-    LEFT JOIN comments
-    ON articles.article_id = comments.article_id 
-    GROUP BY
-    articles.article_id
-    ORDER BY articles.created_at DESC;`)
+    .query('SELECT * FROM articles WHERE topic = $1', [topic])
     .then((result) => {
         return result.rows;
     })
+    }
 }
 
 function selectCommentsByArticleId(article_id) {
