@@ -55,7 +55,7 @@ function insertComment(newComment, article_id) {
         if(rows.length === 0) {
             return Promise.reject({status: 404, msg: 'article does not exist'})
         }
-    return result.rows[0]
+    return rows[0]
     })
 }
 
@@ -68,9 +68,9 @@ function updateVote(newVote, article_id) {
     [newVote, article_id]
     ) 
     .then((result) => {
-        // if(!result.rows[0]){
-        //     return Promise.reject({ status: 404, msg: 'not found' })
-        // }
+        if(!result.rows[0]){
+            return Promise.reject({ status: 404, msg: 'not found' })
+        }
         return result.rows[0]
     });
 }
@@ -85,4 +85,12 @@ function removeCommentById(comment_id){
     });
 }
 
-module.exports = { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment, updateVote, removeCommentById }
+function selectUsers(){
+    return db
+    .query('SELECT * FROM users')
+    .then((result) => {
+        return result.rows;
+    })
+}
+
+module.exports = { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment, updateVote, removeCommentById, selectUsers }
