@@ -141,32 +141,32 @@ describe('/api/articles/:article_id/comments', () => {
     })
 })
  describe('/api/articles/:article_id/comments', () => {
-//     test('POST: 201, creates a new comment for an article', () => {
-//         const newComment = {
-//             body: 'This is a test comment',
-//             username: 'icellusedkars'
-//         }
-//         return request(app)
-//         .post('/api/articles/3/comments')
-//         .send(newComment)
-//         .expect(201)
-//         .then((response) => {
-//             expect(response.body.comment.comment_id).toBe(19)
-//             expect(response.body.comment.votes).toBe(0)
-//             expect(response.body.comment.author).toBe('icellusedkars')
-//             expect(response.body.comment.article_id).toBe(3)
-//             expect(response.body.comment.body).toBe('This is a test comment')
-//             expect(typeof response.body.comment.created_at).toBe('string')
-//         })
-//     })
-    // test('POST: 404, sends an appropriate status and error message when given a valid but non-existent id', () => {
-    //     return request(app)
-    //     .post('/api/articles/888/comments')
-    //     .expect(404)
-    //     .then(({ body }) => {
-    //         expect(body.msg).toBe('not found')
-    //     })
-    // })
+    test('POST: 201, creates a new comment for an article', () => {
+        const newComment = {
+            body: 'This is a test comment',
+            username: 'icellusedkars'
+        }
+        return request(app)
+        .post('/api/articles/3/comments')
+        .send(newComment)
+        .expect(201)
+        .then((response) => {
+            expect(response.body.comment.comment_id).toBe(19)
+            expect(response.body.comment.votes).toBe(0)
+            expect(response.body.comment.author).toBe('icellusedkars')
+            expect(response.body.comment.article_id).toBe(3)
+            expect(response.body.comment.body).toBe('This is a test comment')
+            expect(typeof response.body.comment.created_at).toBe('string')
+        })
+    })
+    test('POST: 404, sends an appropriate status and error message when given a valid but non-existent id', () => {
+        return request(app)
+        .post('/api/articles/888/comments')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('not found')
+        })
+    })
     test('POST: 400, sends an appropriate status and error message when given an invalid id', () => {
         return request(app)
         .post('/api/articles/not-an-article/comments')
@@ -198,14 +198,14 @@ describe('/api/articles/:article_id', () => {
             expect(article.article_img_url).toBe('https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700')
         }) 
     }) 
-    // test('PATCH: 404 sends an appropriate status and error message when given a valid but non-existent id', () => {
-    //     return request(app)
-    //     .patch ('/api/articles/not-an-article')
-    //     .expect(404)
-    //     .then(({body}) => {
-    //         expect(body.msg).toBe('not found')
-    //     })
-    // }) 
+    test('PATCH: 404 sends an appropriate status and error message when given a valid but non-existent id', () => {
+        return request(app)
+        .patch ('/api/articles/888')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('not found')
+        })
+    }) 
     test('PATCH: 400, sends an appropriate status and error message when given an invalid id', () => {
         return request(app)
         .patch('/api/articles/not-an-article')
@@ -238,3 +238,21 @@ describe('/api/comments/:comment_id', () => {
         })
     })
 })
+describe('/api/users', () => {
+    test('GET:200, responds with an array of user objects with the correct properties', () => {
+       return request(app)
+       .get('/api/users')
+       .expect(200)
+       .then(({body}) => {
+        const { users } = body;
+        expect(users.length).toBe(4);
+        users.forEach((user) => {
+            expect(typeof user.username).toBe('string')
+            expect(typeof user.name).toBe('string')
+            expect(typeof user.avatar_url).toBe('string')
+        })
+       })
+    });  
+ })
+
+ 

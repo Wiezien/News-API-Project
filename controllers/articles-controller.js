@@ -1,4 +1,4 @@
-const { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment, updateVote, removeCommentById } = require('../models/articles-model')
+const { selectTopics, selectArticleById, selectArticles, selectCommentsByArticleId, insertComment, updateVote, removeCommentById, selectUsers } = require('../models/articles-model')
 const endpoints = require('../endpoints.json')
 
 function getTopics(req, res, next){
@@ -80,5 +80,11 @@ function deleteCommentById(req, res, next){
   })
 }
 
+function getUsers(req, res, next) {
+  selectUsers().then((users) => {
+    res.status(200).send({ users })
+  }) 
+}
 
-module.exports = { getTopics, getEndpoints, getArticleById, getArticles, getCommentsByArticleId, postComments, patchArticles, deleteCommentById }
+
+module.exports = { getTopics, getEndpoints, getArticleById, getArticles, getCommentsByArticleId, postComments, patchArticles, deleteCommentById, getUsers}
