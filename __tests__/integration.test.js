@@ -254,5 +254,17 @@ describe('/api/users', () => {
        })
     });  
  })
-
+ describe('/api/articles', () => {
+    test('GET: 200, returns articles of a specified topic', () => {
+        return request(app)
+        .get('/api/articles?topic=mitch')
+        .expect(200)
+        .then(({body}) => {
+        const { articles } = body
+        articles.forEach((article) => {
+            expect(article.topic).toBe('mitch')
+        })
+        })
+    })
+ })
  
