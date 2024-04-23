@@ -261,10 +261,19 @@ describe('/api/users', () => {
         .expect(200)
         .then(({body}) => {
         const { articles } = body
+        expect(articles).toHaveLength(12)
         articles.forEach((article) => {
             expect(article.topic).toBe('mitch')
         })
         })
     })
- })
+    test('GET: 200, returns an empty array when topic exists but no articles with that topic', () => {
+        return request(app)
+        .get('/api/articles?topic=paper')
+        .expect(200)
+        .then(({ body: {articles} }) => {
+            expect(articles).toHaveLength(0)
+        })
+    })
+})
  

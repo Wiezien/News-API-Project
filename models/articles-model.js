@@ -17,38 +17,27 @@ function selectArticleById(article_id) {
    })
 }
 
-function selectArticles(articles, comments, topic){
-    const queryValues = []
-    let sqlQuery = 'SELECT * FROM articles';
+function selectArticles(topic){
 
-    if (topic){
+    const queryValues = []
+    let sqlQuery = `SELECT articles.article_id, title, topic, articles.author, articles.votes, articles.created_at, article_img_url,  COUNT(comments.article_id) AS comment_count
+    FROM articles
+    LEFT JOIN comments
+    ON articles.article_id = comments.article_id` 
+    if(topic){
+        sqlQuery += ' WHERE topic=$1'
         queryValues.push(topic)
-        sqlQuery += `COUNT(comments.article_id) AS comment_count
-             FROM articles
-             LEFT JOIN comments
-             ON articles.article_id = comments.article_id 
-             WHERE TOPIC = $1
-             GROUP BY
-             articles.article_id
-             ORDER BY articles.created_at DESC;`,
-             [topic]
-        return queryValues
     }
-    else {
-        sqlQuery += (`COUNT(comments.article_id) AS comment_count
-        FROM articles
-        LEFT JOIN comments
-        ON articles.article_id = comments.article_id 
-        GROUP BY
-        articles.article_id
-        ORDER BY articles.created_at DESC;`,
-        [topic])
+    sqlQuery += ` GROUP BY
+    articles.article_id
+    ORDER BY articles.created_at DESC;`
+
+
     return db
-    .query('SELECT * FROM articles WHERE topic = $1', [topic])
-    .then((result) => {
-        return result.rows;
+    .query(sqlQuery, queryValues)
+    .then(({rows}) => {
+        return rows;
     })
-    }
 }
 
 function selectCommentsByArticleId(article_id) {
