@@ -12,18 +12,14 @@ function getEndpoints(req,res,next){
 }
 
 function getArticleById(req, res, next){
-    const { article_id } = req.params
-    selectArticleById(article_id)
-    .then((article) => {
-      if(!article){
-        res.status(404).send({ msg: 'article does not exist' })
-      }
-      else {
-        res.status(200).send({ article })
-      }
-    }).catch((err) => {
-      next(err)
-    })
+  const { article_id } = req.params
+  selectArticleById(article_id)
+  .then((article) => {
+    res.status(200).send({ article })
+  })
+  .catch((err) => {
+    next(err)
+  })
 }
 
 function getArticles(req, res , next) {
