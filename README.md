@@ -1,4 +1,4 @@
-# NC-News
+# NC-News-API
 
 Link to hosted version on Render:
 
@@ -6,7 +6,7 @@ https://news-api-project-hnma.onrender.com
 
 ## Project Summary
 
-This project involves building an API that allows users to access application data programmatically The API mimics a real world backend service(such as Reddit) and provides information to the front end architecture.
+This project involves building an API that allows users to access application data programmatically The API mimics a real world backend service (such as Reddit) and provides information to the front end architecture of my NC-News project.
 
 Here are the key components:
 
@@ -15,6 +15,9 @@ Here are the key components:
  - **Testing**: Followed TDD principles using Jest and Supertest. 
  - **Live Hosting**: The live site is hosted on Render.
 
+Here is the link to my associated front-end project, NC-News:
+
+https://github.com/Wiezien/NC-News 
 
 ## Setup Instructions
 
