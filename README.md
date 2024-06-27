@@ -2,7 +2,7 @@
 
 Link to hosted version on Render:
 
-https://news-api-project-hnma.onrender.com
+https://news-api-project-hnma.onrender.com/api
 
 ## Project Summary
 
